@@ -33,6 +33,7 @@ gem 'kaminari'
 gem 'grit'
 gem 'delayed_job_mongoid'
 gem 'daemons'
+gem 'riak-client'
 
 group :development do
   gem 'rspec-rails'
