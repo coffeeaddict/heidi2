@@ -103,10 +103,14 @@ GEM
       eventmachine (>= 0.12.0)
     file-tail (1.0.12)
       tins (~> 0.5)
-    git (1.2.5)
+    grit (2.5.0)
+      diff-lcs (~> 1.1)
+      mime-types (~> 1.15)
+      posix-spawn (~> 0.3.6)
     hike (1.2.1)
     http_parser.rb (0.5.3)
     i18n (0.6.1)
+    innertube (1.0.2)
     journey (1.0.4)
     json (1.7.6)
     kaminari (0.14.1)
@@ -145,6 +149,7 @@ GEM
     parslet (1.4.0)
       blankslate (~> 2.0)
     polyglot (0.3.3)
+    posix-spawn (0.3.6)
     prototype-rails (3.2.1)
       rails (~> 3.2)
     rack (1.4.3)
@@ -246,7 +251,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faye
-  git
+  grit
   kaminari
   kindergarten
   less-rails (~> 2.2.6)

@@ -30,7 +30,7 @@ gem 'thin'
 gem 'kaminari'
 
 # for heidi
-gem 'git'
+gem 'grit'
 gem 'delayed_job_mongoid'
 gem 'daemons'
 
