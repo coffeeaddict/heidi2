@@ -1,0 +1,17 @@
+<div class="row-fluid">
+  <div class="span4">
+    <h3>Live updates</h3>
+  </div>
+
+  <div class="span8">
+    <h2>Projects</h2>
+    <%= render partial: "project_overview", collection: @projects %>
+
+    <br />
+    <br />
+
+    <%= link_to new_project_path, class: "btn btn-success" do %>
+      <i class="icon icon-white icon-plus"></i> New project
+    <% end %>
+  </div>
+</div>

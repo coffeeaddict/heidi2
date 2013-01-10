@@ -1,0 +1,16 @@
+<div class="row-fluid">
+  <div class="span6">
+    <h4>Build history</h4>
+  </div>
+
+  <div class="span6">
+    <h4>Repositories</h4>
+    <ul id="repositories">
+      <%= render partial: "repo", collection: project.repositories %>
+    </ul>
+      
+    <%= link_to new_project_repository_path(project), remote: true, class: "btn btn-success btn-small" do %>
+      <i class="icon icon-white icon-plus"></i> Add repository
+    <% end %>
+  </div>  
+</div>

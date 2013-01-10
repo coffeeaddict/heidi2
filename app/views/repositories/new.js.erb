@@ -1,0 +1,16 @@
+// hide the 'add' button 
+$('repositories').next().hide();
+
+// show a form
+$('repositories').insert({ after: '<%= js_partial "new" %>' });
+
+// on escape - escape
+$('new_repository').observe('keydown', function(event) {
+  if ( event.keyCode == Event.KEY_ESC ) {
+    // remove the form
+    $('new_repository').remove();
+
+    // show the button again
+    $('repositories').next().show();
+  }
+});

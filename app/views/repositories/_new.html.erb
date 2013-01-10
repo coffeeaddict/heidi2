@@ -1,0 +1,7 @@
+<%= form_for [@project, @repository], remote: true, html: { class: "form form-inline" } do |f| %>
+  <%= f.text_field :name, placeholder: "name", class: "input-mini", autofocus: true %>
+  <%= f.text_field :uri, placeholder: "git://", class: "input-mini" %>
+  <button name="commit" type="submit" class="btn">
+    <i class="icon icon-plus"></i>
+  </button>
+<% end %>

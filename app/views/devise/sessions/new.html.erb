@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="span8">
+    <h2>Sign in</h2>
+    
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), html: { class: "form form-inline" }) do |f| %>
+      <%= f.email_field :email, placeholder: "E-mail" %>
+      <%= f.password_field :password, placeholder: "Password", class: "input-small" %>
+      <%= f.submit "Sign in" %>
+      
+      <% if devise_mapping.rememberable? -%>
+        <br />
+        <%= f.label :remember_me, f.check_box(:remember_me) + " Remember me?" %>
+      <% end -%>
+    
+    <% end %>
+    
+  </div>
+  <div class="span4">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>    

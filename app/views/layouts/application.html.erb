@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Heidi2</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="brand" href="/" title="Heidi-Zwei">Heidi2</a>
+
+        <div class="nav-collapse collapse pull-right">
+          <ul class="nav">
+            <% if current_user? %>
+              <li class="">
+                <%= link_to :Projects, projects_path %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="margin-top: 40px;">
+    <div class="row-fluid">
+      <div class="span1"><!-- I preserve room -->&nbsp;</div>
+      <div class="span11"><%= yield %></div>
+    </div>
+  </div>
+
+</body>
+</html>

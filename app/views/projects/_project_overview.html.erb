@@ -1,0 +1,21 @@
+<div class="row-fluid">
+  <div class="span4">
+    <h4>
+      <%= project_overview.name %>
+      <small class="<%= project_overview.status %>"><%= project_overview.status.capitalize %></small>
+    </h4>
+
+    <%= link_to project_overview do %>
+      <i class="icon icon-chevron-right"></i> Open project
+    <% end %>
+  </div>
+
+  <div class="span6" style="padding-top: 10px">
+    <small>
+      Last build: <a href="" class="failing">gems/55f28a9</a>, <%= time_ago_in_words(3.5.hours.ago) %> ago<br />
+      Last successful: <a href="" class="passing">OM/b6d7c72</a>, <%= time_ago_in_words(3.5.weeks.ago) %> ago<br />
+      Deployed: <a href="">v1.1.2-CVE-2013-5964</a>, <%= time_ago_in_words(3.months.ago) %> ago<br />
+    </small>
+  </div>
+</div>
+<br />

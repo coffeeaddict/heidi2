@@ -1,0 +1,4 @@
+<li><%= link_to repo.name, [ repo.project, repo ] %> - <small><%= repo.uri %></small>
+  <br />
+  <small>HEAD: <%= repo.last_head ? repo.git.object(repo.last_head).message : "<em>pending</em>".html_safe %></small>
+</li>

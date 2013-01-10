@@ -1,0 +1,8 @@
+// remove the form
+$('new_repository').remove();
+
+// insert a new li
+$('repositories').insert({ bottom: '<%= js_partial "projects/repo", object: @repository %>' });
+
+// show the button again
+$('repositories').next().show();
