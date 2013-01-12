@@ -1,18 +1,16 @@
 require 'fileutils'
-require 'git'
+require 'grit'
 
 class Repository
   include Mongoid::Document
 
   field :name, type: String
   field :uri, type: String
-  field :default_branch, type: String, default: "master"
+  field :default_branch, type: String, default: "origin/develop"
   field :last_head, type: String
 
   embedded_in :project
-
-  has_many :commits
-  has_many :builds
+  embeds_many :builds
 
   validates :name, :uri, :presence => true
 
@@ -22,6 +20,11 @@ class Repository
 
   def update_head
     self.update_attributes( last_head: git.commits("HEAD").first.id )
+  end
+
+  def summary
+    return "... pending ..." if last_head.blank?
+    git.object(last_head).message.split("\n").first
   end
 
   def path
@@ -83,5 +86,11 @@ class Repository
     File.unlink(lock_file)
   end
 
-  delegate :commit, to: :git
+  def commits
+    git.commits(default_branch)
+  end
+
+  def commit
+    git.commit(default_branch)
+  end
 end
