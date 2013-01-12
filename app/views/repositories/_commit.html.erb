@@ -2,7 +2,8 @@
   <div class="span1">
     <address><%= commit.sha[0..9] %></address>
   </div>
-  <div class="span11">
-    <pre><%= commit.message %></pre>
+  <div class="span1">&nbsp;</div>
+  <div class="span10 well">
+    <%= md commit.message %>
   </div>
 </div>

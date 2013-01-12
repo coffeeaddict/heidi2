@@ -35,6 +35,10 @@ gem 'delayed_job_mongoid'
 gem 'daemons'
 gem 'riak-client'
 
+# for coolness
+gem 'github-markdown'
+gem 'gemoji'
+
 group :development do
   gem 'rspec-rails'
 end
