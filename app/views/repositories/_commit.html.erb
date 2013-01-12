@@ -1,6 +1,12 @@
 <div class="row-fluid">
   <div class="span1">
-    <address><%= commit.sha[0..9] %></address>
+    <address>
+      <% if (build = @repository.builds.where(commit: commit).first) %>
+        <%= link_to commit.id[0..9], [@project, @repository, build] %>
+      <% else %>
+        <%= commit.id[0..9] %>
+      <% end %>
+    </address>
   </div>
   <div class="span1">&nbsp;</div>
   <div class="span10 well">
