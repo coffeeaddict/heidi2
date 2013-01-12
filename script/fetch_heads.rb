@@ -7,42 +7,42 @@ EM.run {
   faye = Faye::Client.new('http://localhost:8000/faye')
 
   msgs = 0
-    
+
   Project.all.each do |project|
     debug("Inspecting #{project.name}")
-  
+
     project.repositories.each do |repo|
       debug("\tFetching #{repo.name}")
-  
+
       repo.fetch
-      unless (fetch_head = repo.commit("FETCH_HEAD"))
-        debug("\tNo FETCH_HEAD, strange...")
+      unless (head = repo.commit)
+        debug("\tNo commit, strange...")
         next
       end
 
-      if fetch_head.id != repo.last_head
-        if fetch_head.message !~ /\[(skip ci|ci skip)\]/
+      if head.id != repo.last_head
+        if head.message !~ /\[(skip ci|ci skip)\]/
           payload = {
             project: project._id,
             repo:    repo._id.to_s,
-            commit:  fetch_head.id
+            commit:  head.id
           }
-          
+
           # build it
           msgs += 1
           msg = faye.publish( "/build/project", payload )
           msg.callback do
-            msgs -= 1  
+            msgs -= 1
           end
           msg.errback do
             $stderr.puts "build message undelivered"
             msgs -= 1
           end
-          
-          debug("\t\tBuilding #{fetch_head.id[0..6]}")
+
+          debug("\t\tBuilding #{head.id[0..6]}")
         else
-          debug("\t\tSkipping #{fetch_head.id[0..6]} per request [#{$1}]")
-          repo.update_attributes( last_head: fetch_head.id )
+          debug("\t\tSkipping #{head.id[0..6]} per request [#{$1}]")
+          repo.update_attributes( last_head: head.id )
         end
       else
         debug("\t\tNothing changed")

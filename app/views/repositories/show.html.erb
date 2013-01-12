@@ -6,6 +6,6 @@
   <div class="span8">
     <h2><%= @project.name %> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
     <h3><%= @repository.name %></h3>
-    <%= render partial: 'commit', collection: @repository.git.log.take(50) %>
+    <%= render partial: 'commit', collection: @repository.commits %>
   </div>
 </div>
