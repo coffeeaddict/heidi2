@@ -1,0 +1,128 @@
+.color1 {
+  font-weight: bold;
+}
+
+.color3 {
+  font-style: italic;
+}
+
+.color4 {
+  text-decoration: underline;
+}
+
+.color9 {
+  text-decoration: line-through;
+}
+
+.DNF, .color30 {
+  color: #333 !important;
+}
+
+.failed, .color31 {
+  color: red !important;
+}
+
+.passed, .worked, .color32 {
+  color: green !important;
+}
+
+.errored, .color33 {
+  color: yellow !important;
+}
+
+.color34 {
+  color: blue !important;
+}
+
+.color35 {
+  color: purple !important;
+}
+
+.terminal .DNF, .color36 {
+  color: aqua !important;
+}
+
+.color37, .color39 {
+  color: white !important;
+}
+
+.color40, .color49 {
+  background-color: #333;
+}
+
+.color41 {
+  background-color: red;
+}
+
+.color42 {
+  background-color: green;
+}
+
+.color43 {
+  background-color: yellow;
+}
+
+.color44 {
+  background-color:  blue;
+}
+
+.color45 {
+  background-color: purple;
+}
+.color46 {
+  background-color: aqua;
+}
+.color47 {
+  background-color: white;
+}
+
+.status {
+  padding-left: 3em;
+}
+
+table {
+  font-size: inherit;
+  font: 100%;
+}
+
+pre.terminal {
+  font-family: 'Bitstream Vera Sans Mono', 'Courier', monospace;
+  font-size: 110%;
+  border: 1px solid black;
+  background-color: #333;
+  color: white;
+  padding: 5px;
+  overflow: auto;
+  word-wrap: break-word;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+.terminal a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.terminal a.build {
+  font-weight: bold;
+  border-bottom: dashed #ccc 1px;
+  margin: 4px 0;
+  display: inline-block;
+}
+
+ul {
+  margin-left: 3em;
+}
+
+.top {
+  float: left;
+  padding-left: 2em;
+}
+
+.log {
+  float: left;
+}
+
+.clear {
+  clear: both;
+}
