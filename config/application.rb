@@ -42,6 +42,9 @@ module Heidi2
     end
 
     config.repositories = ActiveSupport::OrderedOptions.new
+
+    config.assets.paths << Emoji.images_path
+    config.assets.precompile << "emoji/*.png"
   end
 end
 
