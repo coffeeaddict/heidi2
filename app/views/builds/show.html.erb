@@ -1,0 +1,24 @@
+<div class="row-fluid">
+  <div class="span4">
+    <h3>Live updates</h3>
+  </div>
+
+  <div class="span8">
+    <h2><%= @project.name %> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
+    <h3><%= @repository.name %></h3>
+
+    <h4>Build <%= @build.commit[0..9] %>
+      <small><%= @build.status %></small>
+    </h4>
+
+    <%= render partial: 'log', object: @build.log %>
+  </div>
+</div>
+
+<% content_for :script do %>
+  sub = client.subscribe("/build/<%= @build._id %>", function() {
+    console.log("message on build");
+    new Ajax.Request('<%= tail_project_repository_build_path(@project,@repository,@build) %>');
+  });
+  sub.callback(function() { console.log("Listening to /build/<%= @build._id %>"); });
+<% end %>
