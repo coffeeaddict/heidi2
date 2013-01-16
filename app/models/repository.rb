@@ -10,17 +10,36 @@ class Repository
   field :last_head, type: String
 
   embedded_in :project
+  embeds_many :build_instructions
   embeds_many :builds
 
   validates :name, :uri, :presence => true
 
   after_create ->{
-    self.delay.update_head unless !self.persisted?
+    self.delay.guess_build_instructions
   }
 
   def update_head
     self.update_attributes( last_head: git.commits("HEAD").first.id )
   end
+
+  def guess_build_instructions
+    self.fetch
+    self.checkout(self.commit.id)
+
+    if File.exists?(File.join(self.path, "Gemfile"))
+      build_instructions.create( script: "bundle install --deployment --binstubs --without development test" )
+    end
+
+    if File.exists?(File.join(self.path, "Rakefile"))
+      build_instructions.create( script: "bundle exec rake" )
+    end
+
+    if File.exists?(File.join(self.path, "spec"))
+      build_instructions.create( script: "bundle exec rspec --color -f d spec/" )
+    end
+  end
+
 
   def summary
     return "... pending ..." if last_head.blank?
