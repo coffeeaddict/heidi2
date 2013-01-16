@@ -77,7 +77,10 @@ class Repository
   end
 
   def checkout(commit=self.commit)
-    return false if locked?
+    if !locked?
+      warn "You do not have the lock"
+      return false
+    end
 
     commit = commit.id if commit.is_a?(Grit::Commit)
 
@@ -111,7 +114,13 @@ class Repository
 
     yield
 
+  rescue => ex
+    Rails.logger.fatal "Error in lock-block: #{ex.class}: #{ex.message}"
+    Rails.logger.debug "\t#{ex.backtrace.join("\n\t")}"
+
+  ensure
     File.unlink(lock_file)
+
   end
 
   def commits

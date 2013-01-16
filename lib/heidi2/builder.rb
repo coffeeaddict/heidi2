@@ -5,20 +5,29 @@ module Heidi2
     end
 
     def build(commit)
-      return unless @repo.locked?
-      @repo.checkout(commit)
+      return if @repo.locked?
+      @repo.lock do
+        @repo.checkout(commit)
 
-      @build = @repo.builds.create( commit: commit, status: 'building' )
-      @build.create_log
+        if @repo.builds.where( commit: commit ).any?
+          @build = @repo.builds.find_by( commit: commit )
+          if @build.status == 'building'
+            Rails.logger.error "The build is already building"
+            return
+          end
 
-      @repo.build_instructions.each do |instruction|
-        if instruction.blocking?
-          execute(instruction)
         else
-          Thread.new { execute(instruction) }
+          @build = @repo.builds.create( commit: commit, status: 'building' )
+          @build.create_log
+        end
+
+        @repo.build_instructions.each do |instruction|
+          execute(instruction)
+          break if @build.status == 'failing'
         end
       end
 
+      @build.status = 'passing' unless @build.status == 'failing'
       @build.save
 
       return @build
