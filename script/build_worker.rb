@@ -7,9 +7,7 @@ EM.run {
 
     if repo.checkout(message[:commit])
       repo.lock do
-        Thread.new {
-          Heidi2::Builder.build(repo, message[:commit])
-        }
+        Heidi2::Builder.build(repo, message[:commit])
       end
     end
   end
