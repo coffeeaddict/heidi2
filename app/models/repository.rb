@@ -76,11 +76,20 @@ class Repository
     git.remote_fetch("origin")
   end
 
-  def checkout(commit)
+  def checkout(commit=self.commit)
     return false if locked?
 
-    Dir.chdir(path) do
-      git.git.checkout({raise: true, b: "build-#{commit[0..6]}"}, commit)
+    commit = commit.id if commit.is_a?(Grit::Commit)
+
+    branch_name = "build-#{commit[0..6]}"
+    return true if Grit::Head.current(self.git).name == branch_name
+
+    if self.git.branches.any? { |b| b.name == branch_name }
+      git.git.checkout({raise: true}, branch_name)
+    else
+      Dir.chdir(path) do
+        git.git.checkout({raise: true, b: branch_name}, commit)
+      end
     end
   end
 
