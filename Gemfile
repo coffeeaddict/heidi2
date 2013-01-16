@@ -34,6 +34,7 @@ gem 'grit'
 gem 'delayed_job_mongoid'
 gem 'daemons'
 gem 'riak-client'
+gem 'simple_shell', '1.1.0'
 
 # for coolness
 gem 'github-markdown'
