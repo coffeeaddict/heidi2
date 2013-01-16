@@ -1,0 +1,25 @@
+<div class="row-fluid">
+  <div class="span4">
+    <h2>Heidi2 <small>Bauern-art CI</small></h2>
+    <%= image_tag "HeidiBlue-480.png" %>
+  </div>
+
+  <div class="span4">
+    <h3>Projects</h3>
+    <ul>
+      <%= render partial: "project", collection: @projects %>
+    </ul>
+    <%= paginate @projects %>
+    <br />
+    <br />
+
+    <%= link_to new_project_path, class: "btn btn-success" do %>
+      <i class="icon icon-white icon-plus"></i> New project
+    <% end %>
+  </div>
+
+  <div class="span4">
+    <h3>Live updates</h3>
+  </div>
+
+</div>

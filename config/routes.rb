@@ -11,5 +11,5 @@ Heidi2::Application.routes.draw do
     end
   end
 
-  root :to => 'projects#index'
+  root :to => 'home#index'
 end
