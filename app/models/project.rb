@@ -20,4 +20,17 @@ class Project
   def builds
     repositories.collect(&:builds)
   end
+
+  def determine_status
+    status = if repositories.any? { |r| r.builds.last.status == "building" }
+      "building"
+    elsif repositories.any? { |r| r.builds.last.status == "failing" }
+      "failing"
+    else
+      "passing"
+    end
+
+    update_attributes( status: status )
+  end
+
 end
