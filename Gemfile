@@ -46,7 +46,9 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'rspec-rails-mocha'
   gem 'mongoid-rspec'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem "shoulda-matchers"
 end

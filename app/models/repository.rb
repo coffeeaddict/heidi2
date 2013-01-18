@@ -19,6 +19,10 @@ class Repository
     self.delay.guess_build_instructions
   }
 
+  def status
+    builds.any? ? builds.last.status : "pending"
+  end
+
   def update_head
     self.update_attributes( last_head: git.commits("HEAD").first.id )
   end

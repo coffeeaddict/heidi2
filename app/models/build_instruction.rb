@@ -6,6 +6,9 @@ class BuildInstruction
 
   embedded_in :repository
 
+  validates :script,
+    presence: true
+
   def blocking?
     !!blocking
   end

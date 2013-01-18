@@ -3,7 +3,7 @@ class Project
 
   field :name, type: String
   field :_id, type: String, default: ->{ name.underscore.gsub(/[^\p{Word}]+/,'-') rescue nil }
-  field :status, type: String
+  field :status, type: String, default: "pending"
 
   embeds_many :repositories
 
@@ -15,10 +15,10 @@ class Project
 
   validates :status,
     presence: true,
-    inclusion: { in: %w[pending passing failing building] }
+    inclusion: { in: %w[pending passed failed building] }
 
   def builds
-    repositories.collect(&:builds)
+    repositories.collect(&:builds).flatten
   end
 
   def build!
@@ -28,12 +28,12 @@ class Project
   end
 
   def determine_status
-    status = if repositories.any? { |r| r.builds.last.status == "building" }
+    status = if repositories.any? { |r| r.status == "building" }
       "building"
-    elsif repositories.any? { |r| r.builds.last.status == "failing" }
-      "failing"
+    elsif repositories.any? { |r| r.status == "failed" }
+      "failed"
     else
-      "passing"
+      "passed"
     end
 
     update_attributes( status: status )
