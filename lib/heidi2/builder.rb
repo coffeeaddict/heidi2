@@ -31,11 +31,11 @@ module Heidi2
 
         @repo.build_instructions.each do |instruction|
           execute(instruction)
-          break if @build.status == 'failing'
+          break if @build.status == 'failed'
         end
       end
 
-      @build.status = 'passing' unless @build.status == 'failing'
+      @build.status = 'passed' unless @build.status == 'failed'
       @build.save
 
       return @build
@@ -69,7 +69,7 @@ module Heidi2
       res = shell.do(instructions.script)
 
       if res.S?.to_i != 0
-        @build.status = "failing"
+        @build.status = "failed"
       end
     end
 
