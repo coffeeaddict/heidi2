@@ -1,5 +1,7 @@
-<ul>
+<ul id="build-instructions" class="no-jump">
   <%= render partial: 'build_instruction', collection: @repository.build_instructions %>
-
-  <a href="#TODO">Add new instruction</a>
 </ul>
+
+<%= link_to new_project_repository_build_instruction_path(@project, @repository), class: "btn btn-success btn-mini", remote: true do %>
+  <i class="icon icon-white icon-plus"></i>
+<% end %>

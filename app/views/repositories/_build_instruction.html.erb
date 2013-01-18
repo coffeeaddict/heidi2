@@ -1,4 +1,17 @@
-<li>
-  <a href="#" class="pull-right"><i class="icon icon-trash"></i><a>
-  <pre class="terminal"><%= build_instruction.script %></pre>
+<li id="instruction-<%= build_instruction.id %>">
+  <pre class="terminal"><%= link_to [@project, @repository, build_instruction], method: :delete, confirm: "Echt?", remote: true, class: "btn btn-inverse btn-mini pull-right" do %> <i class="icon icon-white icon-trash"></i> <% end %><span contenteditable=true id="instruction-script-<%= build_instruction.id %>"><%= build_instruction.script %></span></pre>
 </li>
+
+<% content_for :script do %>
+  (function() {
+    var el = $('instruction-script-<%= build_instruction.id %>');
+    el.on('blur', function() {
+      new Ajax.Request(
+        '<%= url_for([@project, @repository, build_instruction]) %>',
+        { parameters: { 'script':  el.innerText },
+          method: 'PUT',
+        }
+      )
+    });
+  })();
+<% end %>

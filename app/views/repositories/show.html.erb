@@ -13,11 +13,27 @@
     <h2><%= @repository.name %> <small>Repository</small></h2>
 
     <ul class="nav nav-tabs" id="tabs">
+      <li><a href="#builds" data-toggle="tab">Builds</a></li>
       <li><a href="#commits" data-toggle="tab">Commits</a></li>
       <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
     </ul>
 
     <div class="tab-content">
+      <div class="tab-pane" id="builds">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Commit</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render partial: 'build', collection: @repository.builds %>
+          </tbody>
+        </table>
+      </div>
       <div class="tab-pane" id="commits">
         <%= render partial: 'commit', collection: @repository.commits %>
       </div>

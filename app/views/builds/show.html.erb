@@ -14,10 +14,11 @@
 
     <h2><%= @build.commit[0..9] %>
       <small>Build</small>
-      <small class="build.status"><%= @build.status.capitalize %></small>
+      <small class="<%= @build.status %>"><%= @build.status.capitalize %></small>
     </h2>
 
     <%= render partial: 'log', object: @build.log %>
+    <div id="bottom" />
   </div>
 </div>
 

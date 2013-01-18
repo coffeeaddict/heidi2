@@ -2,5 +2,10 @@
   <span class="pull-right"><%= link_to [ repo.project, repo ], method: :delete, confirm: "4 real?" do %><i class="icon icon-trash"></i><% end %></span>
 <%= link_to repo.name, [ repo.project, repo ] %> - <small><%= repo.uri %></small>
   <br />
-  <em class="small"><%= md repo.summary %></em>
+  <% if repo.builds.any? %>
+    <% build = repo.builds.last %>
+    <small><em class="<%= build.status %>">
+      <%= md "**##{repo.builds.count}**: " + build.summary %>
+    </em></small>
+  <% end %>
 </li>
