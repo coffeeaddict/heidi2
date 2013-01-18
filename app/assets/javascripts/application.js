@@ -13,5 +13,7 @@
 //= require prototype
 //= require prototype_ujs
 //= require turbolinks
+//= require jquery
 //= require twitter/bootstrap
+//= require effects
 //= require_tree .

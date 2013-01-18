@@ -15,7 +15,7 @@ class Log
       bucket.get("#{_id}.log")
     rescue Riak::HTTPFailedRequest
       object = bucket.new("#{_id}.log")
-      object.content_type = "text/plain"
+      object.content_type = "text/plain; charset=ansi"
 
       object
     end
@@ -27,7 +27,7 @@ class Log
     document.raw_data << string
     document.store
 
-    faye.publish("/build/#{_id}", log: :updated)
+    res = faye.publish("/build/#{build._id}", log: :updated)
   end
 
   def faye
@@ -45,5 +45,10 @@ class Log
 
   def data
     document.raw_data
+  end
+
+  def flush
+    document.raw_data = ""
+    document.store
   end
 end

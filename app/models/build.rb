@@ -7,6 +7,7 @@ class Build
 
   # a build is-a commit
   field :commit, type: String
+  field :created_at, type: DateTime, default: ->() { Time.now }
 
   # can be deployed
   field :deployed, type: Boolean
@@ -17,4 +18,8 @@ class Build
   field :status, type: String, default: 'pending'
 
   validates :status, presence: true, inclusion: { in: %w[pending passing failing building] }
+
+  def summary
+    repository.git.commit(self.commit).message.split(/\n/).first
+  end
 end

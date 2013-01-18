@@ -133,12 +133,16 @@ class Repository
 
   def build(commit=self.commit, blocking=false)
     commit = commit.id if commit.is_a?(Grit::Commit)
+    if self.last_head.blank?
+      self.update_attributes(last_head: commit)
+    end
 
     builder = Heidi2::Builder.new(self)
+
     if blocking == true
       builder.build(commit)
     else
-      Thread.new(buidler, commit) do |t_builder, sha|
+      Thread.new(builder, commit) do |t_builder, sha|
         t_builder.build(sha)
       end
     end

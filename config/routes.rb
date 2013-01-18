@@ -3,6 +3,8 @@ Heidi2::Application.routes.draw do
 
   resources :projects do
     resources :repositories do
+      resources :build_instructions
+
       resources :builds do
         member do
            post 'tail'
