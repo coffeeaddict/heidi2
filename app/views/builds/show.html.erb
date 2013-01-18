@@ -4,12 +4,18 @@
   </div>
 
   <div class="span8">
-    <h2><%= @project.name %> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
-    <h3><%= @repository.name %></h3>
+    <ul class="breadcrumb">
+      <li><%= link_to "home", "/" %></li>
+      <li class="divider"> - Project:</li>
+      <li><%= link_to @project.name, @project %></li>
+      <li class="divider"> - Repository:</li>
+      <li><%= link_to @repository.name, [ @project, @repository ] %></li>
+    </ul>
 
-    <h4>Build <%= @build.commit[0..9] %>
-      <small><%= @build.status %></small>
-    </h4>
+    <h2><%= @build.commit[0..9] %>
+      <small>Build</small>
+      <small class="build.status"><%= @build.status.capitalize %></small>
+    </h2>
 
     <%= render partial: 'log', object: @build.log %>
   </div>

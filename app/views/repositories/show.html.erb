@@ -4,8 +4,31 @@
   </div>
 
   <div class="span8">
-    <h2><%= @project.name %> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
-    <h3><%= @repository.name %></h3>
-    <%= render partial: 'commit', collection: @repository.commits %>
+    <ul class="breadcrumb">
+      <li><%= link_to "home", "/" %></li>
+      <li class="divider"> - Project:</li>
+      <li><%= link_to @project.name, @project %></li>
+    </ul>
+
+    <h2><%= @repository.name %> <small>Repository</small></h2>
+
+    <ul class="nav nav-tabs" id="tabs">
+      <li><a href="#commits" data-toggle="tab">Commits</a></li>
+      <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane" id="commits">
+        <%= render partial: 'commit', collection: @repository.commits %>
+      </div>
+      <div class="tab-pane" id="instructions">
+        <%= render partial: 'instructions' %>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<% content_for :script do %>
+  jQuery('#tabs a:first').tab('show');
+<% end %>

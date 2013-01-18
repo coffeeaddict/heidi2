@@ -4,7 +4,9 @@
   </div>
 
   <div class="span8">
-    <h2><%= @project.name %> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
+    <ul class="breadcrumb"><li><%= link_to "home", "/" %></li></ul>
+
+    <h2><%= @project.name %> <small>Project</small> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
     <%= render @project %>
   </div>
 </div>
