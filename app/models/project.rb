@@ -21,6 +21,12 @@ class Project
     repositories.collect(&:builds)
   end
 
+  def build!
+    repositories.each do |repo|
+      repo.build
+    end
+  end
+
   def determine_status
     status = if repositories.any? { |r| r.builds.last.status == "building" }
       "building"
