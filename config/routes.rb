@@ -5,7 +5,7 @@ Heidi2::Application.routes.draw do
     resources :repositories do
       resources :builds do
         member do
-          get 'tail'
+           post 'tail'
         end
       end
     end
