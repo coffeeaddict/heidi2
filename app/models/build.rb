@@ -14,7 +14,7 @@ class Build
   field :tag, type: String
 
   # has a status
-  field :status, type: String
+  field :status, type: String, default: 'pending'
 
-  validates :status, presence: true, inclusion: { in: %w[passing failing building] }
+  validates :status, presence: true, inclusion: { in: %w[pending passing failing building] }
 end
