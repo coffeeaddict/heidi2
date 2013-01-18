@@ -5,10 +5,6 @@ EM.run {
     project = Project.find(message[:project])
     repo = project.repositories.find(message[:repo])
 
-    if repo.checkout(message[:commit])
-      repo.lock do
-        Heidi2::Builder.build(repo, message[:commit])
-      end
-    end
+    repo.build(message[:commit])
   end
 }
