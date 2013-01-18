@@ -86,8 +86,9 @@ table {
 }
 
 pre.terminal {
-  font-family: 'Bitstream Vera Sans Mono', 'Courier', monospace;
-  font-size: 110%;
+  font-family: 'Ubuntu Mono', 'Bitstream Vera Sans Mono', 'Courier', monospace;
+  font-size: 10pt;
+  line-height: 1.1em;
   border: 1px solid black;
   background-color: #333;
   color: white;
