@@ -15,6 +15,8 @@ module Heidi2
             Rails.logger.error "The build is already building"
             return
           end
+          @build.log.flush
+          @build.update_attributes(status: 'building')
 
         else
           @build = @repo.builds.create( commit: commit, status: 'building' )
@@ -52,9 +54,12 @@ module Heidi2
         @build.log.append(line)
       }
       shell.stderr_handler = ->(line) {
-        @build.log.append("[ERR] " + line)
+        msg = "[ERR] " + line
+        msg = "\e[1;31m#{msg}\e[0m"
+        @build.log.append(msg)
       }
 
+      @build.log.append("\e[1m% #{instructions.script}\e[0m")
       res = shell.do(instructions.script)
 
       if res.S?.to_i != 0
