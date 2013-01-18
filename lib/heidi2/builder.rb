@@ -4,6 +4,10 @@ module Heidi2
       @repo = repo
     end
 
+    def faye
+      @faye ||= Faye::Client.new("http://localhost:8000/faye")
+    end
+
     def build(commit)
       return if @repo.locked?
       @repo.lock do
@@ -22,6 +26,8 @@ module Heidi2
           @build = @repo.builds.create( commit: commit, status: 'building' )
           @build.create_log
         end
+
+        faye.publish("/#{@repo.project._id}/#{@repo._id}", new_build: @build._id.to_s)
 
         @repo.build_instructions.each do |instruction|
           execute(instruction)
