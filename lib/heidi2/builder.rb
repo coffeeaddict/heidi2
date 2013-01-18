@@ -48,10 +48,10 @@ module Heidi2
       }
 
       shell = SimpleShell.new(@build.repository.path, env)
-      shell.stdout_handler ->(line) {
+      shell.stdout_handler = ->(line) {
         @build.log.append(line)
       }
-      shell.stderr.handler ->(line) {
+      shell.stderr_handler = ->(line) {
         @build.log.append("[ERR] " + line)
       }
 
