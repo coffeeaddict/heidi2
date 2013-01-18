@@ -35,11 +35,15 @@ class Log
   end
 
   def setup_faye
-    unless defined? Thin
-      Thread.new { EM.run }
-      sleep 1
+    if !EventMachine.reactor_running?
+      Thread.new { EventMachine.run }
+      sleep 0.1 while !EventMachine.reactor_running?
     end
 
     Faye::Client.new('http://localhost:8000/faye')
+  end
+
+  def data
+    document.raw_data
   end
 end
