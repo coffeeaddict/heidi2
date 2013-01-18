@@ -10,5 +10,6 @@ class BuildsController < ApplicationController
 
   def tail
     @build = @repository.builds.find(params[:id])
+    render partial: "log", object: @build.log
   end
 end

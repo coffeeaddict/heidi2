@@ -17,15 +17,19 @@
       <small class="<%= @build.status %>"><%= @build.status.capitalize %></small>
     </h2>
 
-    <%= render partial: 'log', object: @build.log %>
+    <div id="log"><%= render partial: 'log', object: @build.log %></div>
     <div id="bottom" />
   </div>
 </div>
 
 <% content_for :script do %>
   sub = client.subscribe("/build/<%= @build._id %>", function() {
-    console.log("message on build");
-    new Ajax.Request('<%= tail_project_repository_build_path(@project,@repository,@build) %>');
+    <%= remote_function(
+      url: tail_project_repository_build_path(@project,@repository,@build),
+      update: 'log',
+      success: "new Effect.ScrollTo('bottom');",
+    ) %>
+
   });
   sub.callback(function() { console.log("Listening to /build/<%= @build._id %>"); });
 <% end %>
