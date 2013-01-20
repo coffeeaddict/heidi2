@@ -27,6 +27,10 @@ class Project
     end
   end
 
+  def build(repo_id, commit)
+    repositories.find(repo_id).build(commit, true)
+  end
+
   def determine_status
     status = if repositories.any? { |r| r.status == "building" }
       "building"

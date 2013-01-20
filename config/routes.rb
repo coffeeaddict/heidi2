@@ -3,6 +3,10 @@ Heidi2::Application.routes.draw do
 
   resources :projects do
     resources :repositories do
+      member do
+        post :hook
+      end
+
       resources :build_instructions
 
       resources :builds do

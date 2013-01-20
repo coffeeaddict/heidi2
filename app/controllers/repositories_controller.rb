@@ -1,4 +1,7 @@
 class RepositoriesController < ApplicationController
+  skip_before_filter :verify_authenticity_token, only: [ :hook ]
+  skip_before_filter :authenticate_user!, only: [ :hook ]
+
   before_filter {
     sandbox.load_module(RepositoryModule)
     @project = sandbox.project.find(params[:project_id])
@@ -31,4 +34,12 @@ class RepositoriesController < ApplicationController
 
     redirect_to [ @project, @repository ]
   end
+
+  def hook
+    info = JSON.parse(params[:payload])
+    @project.delay.build(params[:id], info['after'])
+
+    head :ok
+  end
+
 end
