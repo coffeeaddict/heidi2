@@ -11,6 +11,28 @@
     </ul>
 
     <h2><%= @repository.name %> <small>Repository</small></h2>
+    <div class="row-fluid">
+      <div class="span6">
+        <%= form_for @repository, url: [ @project, @repository ], html: { class: "form-horizontal" } do |f| %>
+          <div class="control-group">
+            <%= f.label :default_branch, class: "control-label" %>
+            <div class="controls">
+              <%= f.select :default_branch, @repository.git.remotes.collect(&:name) %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <%= f.label :build_environment, class: "control-label" %>
+            <div class="controls">
+              <%= f.text_area :build_environment, value: @repository.build_environment_text, class: "terminal", size: "20x5" %>
+            </div>
+          </div>
+          <div class="form-actions">
+            <%= f.submit "Update", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
 
     <ul class="nav nav-tabs" id="tabs">
       <li><a href="#builds" data-toggle="tab">Builds</a></li>

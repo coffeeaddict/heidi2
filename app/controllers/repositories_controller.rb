@@ -1,5 +1,8 @@
 class RepositoriesController < ApplicationController
-  before_filter { @project = sandbox.project.find(params[:project_id]) }
+  before_filter {
+    sandbox.load_module(RepositoryModule)
+    @project = sandbox.project.find(params[:project_id])
+  }
 
   def new
     @repository = sandbox.project.new_repository(@project)
@@ -20,5 +23,12 @@ class RepositoriesController < ApplicationController
     @project.determine_status
 
     redirect_to @project
+  end
+
+  def update
+    @repository = @project.repositories.find(params[:id])
+    sandbox.repository.update(@repository, params[:repository])
+
+    redirect_to [ @project, @repository ]
   end
 end

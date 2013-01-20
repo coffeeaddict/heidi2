@@ -8,6 +8,7 @@ class Repository
   field :uri, type: String
   field :default_branch, type: String, default: "origin/develop"
   field :last_head, type: String
+  field :build_environment, type: Hash
 
   embedded_in :project
   embeds_many :build_instructions
@@ -29,18 +30,20 @@ class Repository
 
   def guess_build_instructions
     self.fetch
-    self.checkout(self.commit.id)
+    self.lock do
+      self.checkout(self.commit.id)
 
-    if File.exists?(File.join(self.path, "Gemfile"))
-      build_instructions.create( script: "bundle install --deployment --binstubs --without development test" )
-    end
+      if File.exists?(File.join(self.path, "Gemfile"))
+        build_instructions.create( script: "bundle install --deployment --binstubs --without development" )
+      end
 
-    if File.exists?(File.join(self.path, "Rakefile"))
-      build_instructions.create( script: "bundle exec rake" )
-    end
+      if File.exists?(File.join(self.path, "Rakefile"))
+        build_instructions.create( script: "./bin/rake" )
+      end
 
-    if File.exists?(File.join(self.path, "spec"))
-      build_instructions.create( script: "bundle exec rspec --color -f d spec/" )
+      if File.exists?(File.join(self.path, "spec"))
+        build_instructions.create( script: "./bin/rspec --color -f d spec/" )
+      end
     end
   end
 
@@ -152,4 +155,7 @@ class Repository
     end
   end
 
+  def build_environment_text
+    build_environment.collect { |k,v| "#{k}=#{v =~ /\s/ ? %Q{"#{v}"} : v}" }.join("\n")
+  end
 end
