@@ -4,6 +4,18 @@
   <title>Heidi2</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'heidi2.ico' %>
+  <%= javascript_include_tag "application" %>
+
+  <script type="text/javascript"
+          src="http://localhost:8000/faye/client.js">
+  </script>
+
+  <script type="text/javascript" defer="defer">
+    jQuery.noConflict();
+    var client = new Faye.Client('http://localhost:8000/faye');
+  </script>
+
 </head>
 <body>
 
@@ -32,16 +44,11 @@
     </div>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <%= javascript_include_tag "application" %>
-  <script type="text/javascript"
-            src="http://localhost:8000/faye/client.js">
-  </script>
-  <script type="text/javascript" defer="defer">
-    jQuery.noConflict();
-    var client = new Faye.Client('http://localhost:8000/faye');
-    <%= content_for :script %>
-  </script>
+  <% if content_for? :script %>
+    <script type="text/javascript" defer="defer">
+      <%= content_for :script %>
+    </script>
+  <% end %>
 
 </body>
 </html>
