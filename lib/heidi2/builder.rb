@@ -27,7 +27,9 @@ module Heidi2
           @build.create_log
         end
 
-        faye.publish("/#{@repo.project._id}/#{@repo._id}", new_build: @build._id.to_s)
+        if EventMachine.reactor_running?
+          faye.publish("/#{@repo.project._id}/#{@repo._id}", new_build: @build._id.to_s)
+        end
 
         @repo.build_instructions.each do |instruction|
           execute(instruction)
@@ -53,14 +55,21 @@ module Heidi2
         'BUNDLE_GEMFILE'  => nil,
         'GEM_HOME'        => nil,
         'GEM_PATH'        => nil,
-      }
+      }.merge(@build.repository.build_environment || {})
+
+      if ( @repo.build_instructions.index(instructions) == 0 )
+        @build.log.append(
+          "\e[33m" +
+          env.collect { |k,v| "-- #{k}=#{v}" }.join("\n") +
+          "\e[0m" )
+      end
 
       shell = SimpleShell.new(@build.repository.path, env)
       shell.stdout_handler = ->(line) {
         @build.log.append(line)
       }
       shell.stderr_handler = ->(line) {
-        msg = "[ERR] " + line
+        msg = "[stderr] " + line.chomp
         msg = "\e[1;31m#{msg}\e[0m"
         @build.log.append(msg)
       }
@@ -70,7 +79,13 @@ module Heidi2
 
       if res.S?.to_i != 0
         @build.status = "failed"
+        @build.log.append("\e[1;31m-- Failed with exit status #{res.S?.to_i}\e[0m")
       end
+
+      @build.log.append("\e[33m-- Took #{"%.2fs" % (Time.now - start)}\e[0m")
+    rescue => ex
+      msg = "\e[1;31m[FATAL] #{ex.class}: #{ex.message}\e[0m"
+      @build.log.append(msg)
     end
 
   end # Builder
