@@ -19,6 +19,10 @@ class Build
 
   validates :status, presence: true, inclusion: { in: %w[pending passed failed building] }
 
+  after_save ->() {
+    self.repository.project.determine_status
+  }
+
   def summary
     repository.git.commit(self.commit).message.split(/\n/).first
   rescue
