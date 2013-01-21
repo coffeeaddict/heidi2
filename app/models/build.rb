@@ -22,4 +22,8 @@ class Build
   def summary
     repository.git.commit(self.commit).message.split(/\n/).first
   end
+
+  def number
+    repository.builds.index(self) + 1
+  end
 end

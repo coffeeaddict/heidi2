@@ -8,7 +8,7 @@
   <%= javascript_include_tag "application" %>
 
   <script type="text/javascript"
-          src="http://localhost:8000/faye/client.js">
+    src="<%= File.join(Heidi2::Application.config.faye_uri, 'client.js') %>">
   </script>
 
   <script type="text/javascript" defer="defer">
@@ -39,8 +39,13 @@
 
   <div class="container-fluid" style="margin-top: 40px;">
     <div class="row-fluid">
-      <div class="span1"><!-- I preserve room -->&nbsp;</div>
-      <div class="span11"><%= yield %></div>
+      <div class="span1"><!-- create space --></div>
+      <% if content_for? :live_updates %>
+        <div class="span3" id="live-updates"><%= content_for :live_updates %></div>
+        <div class="span8"><%= yield %></div>
+      <% else %>
+        <div class="span11"><%= yield %></div>
+      <% end %>
     </div>
   </div>
 

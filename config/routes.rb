@@ -17,5 +17,7 @@ Heidi2::Application.routes.draw do
     end
   end
 
+  resources :build_events, only: [ :index, :show ]
+
   root :to => 'home#index'
 end

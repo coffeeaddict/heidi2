@@ -27,20 +27,7 @@ class Log
     document.raw_data << string
     document.store
 
-    res = faye.publish("/build/#{build._id}", log: :updated)
-  end
-
-  def faye
-    @faye ||= setup_faye
-  end
-
-  def setup_faye
-    if !EventMachine.reactor_running?
-      Thread.new { EventMachine.run }
-      sleep 0.1 while !EventMachine.reactor_running?
-    end
-
-    Faye::Client.new('http://localhost:8000/faye')
+    res = FayeClient.publish("/build/#{build._id}", log: :updated)
   end
 
   def data

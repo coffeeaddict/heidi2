@@ -4,8 +4,6 @@ def debug(str)
 end
 
 EM.run {
-  faye = Faye::Client.new('http://localhost:8000/faye')
-
   msgs = 0
 
   Project.all.each do |project|
@@ -30,7 +28,7 @@ EM.run {
 
           # build it
           msgs += 1
-          msg = faye.publish( "/build/project", payload )
+          msg = FayeClient.publish( "/build/project", payload )
           msg.callback do
             msgs -= 1
           end

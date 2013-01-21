@@ -139,23 +139,8 @@ class Repository
   end
 
   def build(commit=self.commit, blocking=false)
-    commit = commit.id if commit.is_a?(Grit::Commit)
-
-    # the commit is not here yet
-    if self.git.commit(commit).nil?
-      self.fetch
-    end
-
-    if self.git.commit(commit).nil?
-      raise "No such commit: #{commit}"
-    end
-
-    if self.last_head.blank?
-      self.update_attributes(last_head: commit)
-    end
-
+    commit  = commit.id if commit.is_a?(Grit::Commit)
     builder = Heidi2::Builder.new(self)
-
     if blocking == true
       builder.build(commit)
     else

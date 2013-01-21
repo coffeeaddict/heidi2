@@ -6,6 +6,7 @@ class Project
   field :status, type: String, default: "pending"
 
   embeds_many :repositories
+  has_many :build_events
 
   validates :name,
     presence: true

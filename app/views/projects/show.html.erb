@@ -1,12 +1,9 @@
-<div class="row-fluid">
-  <div class="span4">
-    <h3>Live updates</h3>
-  </div>
+<% content_for :live_updates do %>
+  <%= render partial: 'live_updates/index' %>
+<% end %>
 
-  <div class="span8">
-    <ul class="breadcrumb"><li><%= link_to "home", "/" %></li></ul>
+<ul class="breadcrumb"><li><%= link_to "home", "/" %></li></ul>
 
-    <h2><%= @project.name %> <small>Project</small> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
-    <%= render @project %>
-  </div>
-</div>
+<h2><%= @project.name %> <small>Project</small> <small class="<%= @project.status %>"><%= @project.status.capitalize %></small></h2>
+
+<%= render @project %>

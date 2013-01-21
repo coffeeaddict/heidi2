@@ -1,0 +1,29 @@
+<table class="table table-striped">
+  <tbody>
+    <% BuildEvent.where( :created_at.gte => 3.weeks.ago ).sort(created_at: -1).limit(50).each do |event| %>
+    <tr><td id="build-event-<%= event._id %>"><%= render event %></td></tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% content_for :script do %>
+  client.subscribe("/build_events", function(payload) {
+    if ( payload.new === true ) {
+      <%= remote_function(url: build_events_path, update: "live-updates", method: "GET") %>
+    }
+
+    if ( payload.updated ) {
+      event_id = payload.updated;
+      new Ajax.Updater(
+        'build-event-' + event_id,
+        '<%= j(build_events_path) %>/' + event_id,
+        { parameters: "<%= request_forgery_protection_token %>=" + encodeURIComponent('<%= j(form_authenticity_token) %>'),
+          method: "GET",
+          onSuccess: function() {
+            Effect.Pulsate('build-event-' + event_id, { pulses: 3 }))
+          }
+        }
+      )
+    }
+  });
+<% end %>

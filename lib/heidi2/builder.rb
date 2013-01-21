@@ -4,14 +4,9 @@ module Heidi2
       @repo = repo
     end
 
-    def faye
-      @faye ||= Faye::Client.new("http://localhost:8000/faye")
-    end
-
     def build(commit)
       return if @repo.locked?
       @repo.lock do
-        @repo.checkout(commit)
 
         if @repo.builds.where( commit: commit ).any?
           @build = @repo.builds.find_by( commit: commit )
@@ -20,16 +15,36 @@ module Heidi2
             return
           end
           @build.log.flush
-          @build.update_attributes(status: 'building')
+          @build.update_attributes(status: 'pending')
 
         else
-          @build = @repo.builds.create( commit: commit, status: 'building' )
+          @build = @repo.builds.create( commit: commit )
           @build.create_log
         end
 
-        if EventMachine.reactor_running?
-          faye.publish("/#{@repo.project._id}/#{@repo._id}", new_build: @build._id.to_s)
+        @event = BuildEvent.create(
+          project: @repo.project,
+          repository_id: @repo._id,
+          build_id: @build._id
+          message: "Started build"
+        )
+
+        if @repo.git.commit(commit).nil?
+          @event.set_messag( "Fetching latest changes" )
+          @repo.fetch
         end
+
+        if @repo.git.commit(commit).nil?
+          @event.set_message("Commit #{commit} is unreachable." )
+          @build.update_attributes( status: "failed" )
+          return
+        end
+
+        @repo.update_attributes( last_head: commit )
+        @event.set_message("Creating build checkout")
+        @repo.checkout(commit)
+
+        @build.update_attributes( status: "building" )
 
         @repo.build_instructions.each do |instruction|
           execute(instruction)
@@ -75,11 +90,13 @@ module Heidi2
       }
 
       @build.log.append("\e[1m% #{instructions.script}\e[0m")
+      @event.set_message("Started #{instructions.script}")
       res = shell.do(instructions.script)
 
       if res.S?.to_i != 0
         @build.status = "failed"
         @build.log.append("\e[1;31m-- Failed with exit status #{res.S?.to_i}\e[0m")
+        @event.set_message("Failed on #{instructions.script}")
       end
 
       @build.log.append("\e[33m-- Took #{"%.2fs" % (Time.now - start)}\e[0m")
@@ -90,6 +107,3 @@ module Heidi2
 
   end # Builder
 end # Heidi2
-
-
-

@@ -1,0 +1,21 @@
+<div class="build-event row-fluid">
+  <div class="span1">
+    <%= image_tag "build_#{build_event.status}.png", size: "32x32" %>
+  </div>
+
+  <div class="span11">
+    <%= link_to [build_event.project, build_event.repository, build_event.build],  class: build_event.status do %>
+      <%= md("**##{build_event.build.number}** " + build_event.build.summary).chomp.html_safe %>
+    <% end %>
+
+    <p><%= build_event.message %></p>
+
+    <dl>
+      <dt>Project</dt>
+      <dd><%= link_to build_event.project.name, build_event.project %></dd>
+      <dt>Repository</dt>
+      <dd><%= link_to build_event.repository.name, [ build_event.project, build_event.repository ] %></dd>
+    </dl>
+    <small>Started at: <%= l build_event.created_at %></small>
+  </div>
+</div>

@@ -1,83 +1,78 @@
-<div class="row-fluid">
-  <div class="span4">
-    <h3>Live updates</h3>
-  </div>
+<% content_for :live_updates do %>
+  <%= render partial: 'live_updates/index' %>
+<% end %>
 
-  <div class="span8">
-    <ul class="breadcrumb">
-      <li><%= link_to "home", "/" %></li>
-      <li class="divider"> - Project:</li>
-      <li><%= link_to @project.name, @project %></li>
-    </ul>
+<ul class="breadcrumb">
+  <li><%= link_to "home", "/" %></li>
+  <li class="divider"> - Project:</li>
+  <li><%= link_to @project.name, @project %></li>
+</ul>
 
-    <h2><%= @repository.name %> <small>Repository</small></h2>
+<h2><%= @repository.name %> <small>Repository</small></h2>
 
-    <ul class="nav nav-tabs" id="tabs">
-      <li><a href="#settings" data-toggle="tab">Settings</a></li>
-      <li><a href="#builds" data-toggle="tab">Builds</a></li>
-      <li><a href="#commits" data-toggle="tab">Commits</a></li>
-      <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
-    </ul>
+<ul class="nav nav-tabs" id="tabs">
+  <li><a href="#settings" data-toggle="tab">Settings</a></li>
+  <li><a href="#builds" data-toggle="tab">Builds</a></li>
+  <li><a href="#commits" data-toggle="tab">Commits</a></li>
+  <li><a href="#instructions" data-toggle="tab">Instructions</a></li>
+</ul>
 
-    <div class="tab-content">
-      <div class="tab-pane" id="settings">
-        <div class="row-fluid">
-          <div class="span10">
-            <%= form_for @repository, url: [ @project, @repository ], html: { class: "form-horizontal" } do |f| %>
-              <div class="control-group">
-                <%= f.label :default_branch, class: "control-label" %>
-                <div class="controls">
-                  <%= f.select :default_branch, @repository.git.remotes.collect(&:name) %>
-                </div>
-              </div>
-
-              <div class="control-group">
-                <%= f.label :build_environment, class: "control-label" %>
-                <div class="controls">
-                  <%= f.text_area :build_environment, value: @repository.build_environment_text, class: "input-xxlarge terminal", size: "20x5" %>
-                </div>
-              </div>
-
-              <div class="control-group">
-                <%= label_tag :hook, "Github webhook URL", class: "control-label" %>
-                <div class="controls">
-                  <span class="input-xxlarge uneditable-input">
-                    <%= hook_project_repository_url %>
-                  </span>
-                </div>
-              </div>
-
-              <div class="form-actions">
-                <%= f.submit "Update", class: "btn btn-primary pull-right" %>
-              </div>
-            <% end %>
+<div class="tab-content">
+  <div class="tab-pane" id="settings">
+    <div class="row-fluid">
+      <div class="span10">
+        <%= form_for @repository, url: [ @project, @repository ], html: { class: "form-horizontal" } do |f| %>
+          <div class="control-group">
+            <%= f.label :default_branch, class: "control-label" %>
+            <div class="controls">
+              <%= f.select :default_branch, @repository.git.remotes.collect(&:name) %>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="tab-pane" id="builds">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Commit</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render partial: 'build', collection: @repository.builds %>
-          </tbody>
-        </table>
-      </div>
-      <div class="tab-pane" id="commits">
-        <%= render partial: 'commit', collection: @repository.commits %>
-      </div>
-      <div class="tab-pane" id="instructions">
-        <%= render partial: 'instructions' %>
+          <div class="control-group">
+            <%= f.label :build_environment, class: "control-label" %>
+            <div class="controls">
+              <%= f.text_area :build_environment, value: @repository.build_environment_text, class: "input-xxlarge terminal", size: "20x5" %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <%= label_tag :hook, "Github webhook URL", class: "control-label" %>
+            <div class="controls">
+              <span class="input-xxlarge uneditable-input">
+                <%= hook_project_repository_url %>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <%= f.submit "Update", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
       </div>
     </div>
+  </div>
 
+  <div class="tab-pane" id="builds">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Commit</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: 'build', collection: @repository.builds %>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane" id="commits">
+    <%= render partial: 'commit', collection: @repository.commits %>
+  </div>
+  <div class="tab-pane" id="instructions">
+    <%= render partial: 'instructions' %>
   </div>
 </div>
 

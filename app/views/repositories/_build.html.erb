@@ -1,5 +1,5 @@
 <tr class="<%= build.status %>">
-  <th>#<%= @repository.builds.index(build) + 1 %></th>
+  <th>#<%= build.number %></th>
   <td>
     <%= link_to md(build.summary), [@project, @repository, build], class: build.status %>
     <small><em><%= build.commit %></em></small>

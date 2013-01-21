@@ -4,8 +4,12 @@
   <br />
   <% if repo.builds.any? %>
     <% build = repo.builds.last %>
-    <small><em class="<%= build.status %>">
-      <%= md "**##{repo.builds.count}**: " + build.summary %>
-    </em></small>
+    <small>
+      <%= link_to [ repo.project, repo, build ] do %>
+        <em class="<%= build.status %>">
+          <%= md "**##{build.number}**: " + build.summary %>
+        </em>
+      <% end %>
+    </small>
   <% end %>
 </li>
