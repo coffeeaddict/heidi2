@@ -1,6 +1,8 @@
-<% content_for :live_updates do %>
-  <%= render partial: 'live_updates/index' %>
+<% content_for :script do %>
+  jQuery('#tabs a:first').tab('show');
 <% end %>
+
+<%= live_updates %>
 
 <ul class="breadcrumb">
   <li><%= link_to "home", "/" %></li>
@@ -64,7 +66,7 @@
         </tr>
       </thead>
       <tbody>
-        <%= render partial: 'build', collection: @repository.builds %>
+        <%= render partial: 'build', collection: @repository.builds.reverse %>
       </tbody>
     </table>
   </div>
@@ -76,6 +78,3 @@
   </div>
 </div>
 
-<% content_for :script do %>
-  jQuery('#tabs a:first').tab('show');
-<% end %>

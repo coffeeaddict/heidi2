@@ -27,4 +27,8 @@ module ApplicationHelper
         "<span class=\"#{classes.join(" ")}\">"
       end.html_safe
   end
+
+  def live_updates
+    content_for(:live_updates) { render partial: 'live_updates/index' }
+  end
 end
