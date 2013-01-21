@@ -22,7 +22,6 @@ gem 'prototype-rails'
 gem 'less-rails-bootstrap'
 gem 'turbolinks'
 gem 'faye'
-gem 'ruote', :github => "jmettraux/ruote"
 gem 'devise'
 gem 'kindergarten'
 gem 'bcrypt-ruby', '~> 3.0.0'

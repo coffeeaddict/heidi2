@@ -1,19 +1,3 @@
-GIT
-  remote: git://github.com/jmettraux/ruote.git
-  revision: 8f6ef8f1888aa290ec50f213eab47d883b4e5b99
-  specs:
-    ruote (2.3.1)
-      blankslate (= 2.1.2.4)
-      parslet (= 1.4.0)
-      ruby_parser (~> 2.3)
-      rufus-cloche (>= 1.0.2)
-      rufus-dollar (>= 1.0.4)
-      rufus-json (>= 1.0.1)
-      rufus-mnemo (>= 1.2.2)
-      rufus-scheduler (>= 2.0.16)
-      rufus-treechecker (>= 1.0.8)
-      sourcify (= 0.5.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -48,7 +32,6 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     beefcake (0.3.7)
-    blankslate (2.1.2.4)
     bson (1.8.1)
     bson_ext (1.8.1)
       bson (~> 1.8.1)
@@ -102,8 +85,6 @@ GEM
       yajl-ruby (>= 1.0.0)
     faye-websocket (0.4.6)
       eventmachine (>= 0.12.0)
-    file-tail (1.0.12)
-      tins (~> 0.5)
     gemoji (1.3.1)
     github-markdown (0.5.3)
     grit (2.5.0)
@@ -152,8 +133,6 @@ GEM
     multi_json (1.5.0)
     origin (1.0.11)
     orm_adapter (0.4.0)
-    parslet (1.4.0)
-      blankslate (~> 2.0)
     polyglot (0.3.3)
     posix-spawn (0.3.6)
     prototype-rails (3.2.1)
@@ -207,29 +186,10 @@ GEM
     rspec-rails-mocha (0.3.2)
       mocha (>= 0.9.8)
       rspec-rails (>= 2.0.0)
-    ruby2ruby (1.3.1)
-      ruby_parser (~> 2.0)
-      sexp_processor (~> 3.0)
-    ruby_parser (2.3.1)
-      sexp_processor (~> 3.0)
-    rufus-cloche (1.0.2)
-      rufus-json (>= 1.0.1)
-    rufus-dollar (1.0.4)
     rufus-json (1.0.2)
-    rufus-mnemo (1.2.3)
-    rufus-scheduler (2.0.17)
-      tzinfo (>= 0.3.23)
-    rufus-treechecker (1.0.8)
-      ruby_parser (>= 2.0.5)
-    sexp_processor (3.2.0)
     shoulda-matchers (1.4.1)
       activesupport (>= 3.0.0)
     simple_shell (1.1.0)
-    sourcify (0.5.0)
-      file-tail (>= 1.0.5)
-      ruby2ruby (>= 1.2.5)
-      ruby_parser (>= 2.0.5)
-      sexp_processor (>= 3.0.5)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -243,7 +203,6 @@ GEM
       rack (>= 1.0.0)
     thor (0.16.0)
     tilt (1.3.3)
-    tins (0.6.0)
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
@@ -283,7 +242,6 @@ DEPENDENCIES
   riak-client
   rspec-rails
   rspec-rails-mocha
-  ruote!
   shoulda-matchers
   simple_shell (= 1.1.0)
   therubyracer (= 0.10)
