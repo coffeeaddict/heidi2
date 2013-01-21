@@ -1,26 +1,22 @@
-<div class="row-fluid">
-  <div class="span4">
-    <h3>Live updates</h3>
-  </div>
+<% content_for :live_updates do %>
+  <%= render partial: "live_updates/index" %>
+<% end %>
 
-  <div class="span8">
-    <ul class="breadcrumb">
-      <li><%= link_to "home", "/" %></li>
-      <li class="divider"> - Project:</li>
-      <li><%= link_to @project.name, @project %></li>
-      <li class="divider"> - Repository:</li>
-      <li><%= link_to @repository.name, [ @project, @repository ] %></li>
-    </ul>
+<ul class="breadcrumb">
+  <li><%= link_to "home", "/" %></li>
+  <li class="divider"> - Project:</li>
+  <li><%= link_to @project.name, @project %></li>
+  <li class="divider"> - Repository:</li>
+  <li><%= link_to @repository.name, [ @project, @repository ] %></li>
+</ul>
 
-    <h2><%= @build.commit[0..9] %>
-      <small>Build</small>
-      <small class="<%= @build.status %>"><%= @build.status.capitalize %></small>
-    </h2>
+<h2><%= @build.commit[0..9] %>
+  <small>Build</small>
+  <small class="<%= @build.status %>"><%= @build.status.capitalize %></small>
+</h2>
 
-    <div id="log"><%= render partial: 'log', object: @build.log %></div>
-    <div id="bottom" />
-  </div>
-</div>
+<div id="log"><%= render partial: 'log', object: @build.log %></div>
+<div id="bottom" />
 
 <% content_for :script do %>
   sub = client.subscribe("/build/<%= @build._id %>", function() {

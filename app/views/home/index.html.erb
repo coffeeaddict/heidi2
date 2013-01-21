@@ -4,7 +4,7 @@
     <%= image_tag "HeidiBlue-480.png" %>
   </div>
 
-  <div class="span4">
+  <div class="span3">
     <h3>Projects</h3>
     <ul>
       <%= render partial: "project", collection: @projects %>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="span4">
-    <h3>Live updates</h3>
+    <%= render partial: "live_updates/index" %>
   </div>
 
 </div>

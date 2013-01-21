@@ -25,12 +25,12 @@ module Heidi2
         @event = BuildEvent.create(
           project: @repo.project,
           repository_id: @repo._id,
-          build_id: @build._id
+          build_id: @build._id,
           message: "Started build"
         )
 
         if @repo.git.commit(commit).nil?
-          @event.set_messag( "Fetching latest changes" )
+          @event.set_message( "Fetching latest changes" )
           @repo.fetch
         end
 
@@ -55,7 +55,13 @@ module Heidi2
       @build.status = 'passed' unless @build.status == 'failed'
       @build.save
 
+      @event.set_message('')
+
       return @build
+    rescue => ex
+      @event.set_message("Build error; #{ex.class}: #{ex.message}") if @event
+      @build.update_attributes( status: 'failed' ) if @build
+
     end
 
     def execute(instructions)

@@ -18,7 +18,7 @@ class BuildEvent
   }
 
   after_update ->() {
-    FayeClient.publish("/build_events", updated: self._id)
+    FayeClient.publish("/build_events", updated: self._id.to_s)
   }
 
   def repository=(repository)

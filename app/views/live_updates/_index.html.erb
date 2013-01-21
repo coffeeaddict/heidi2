@@ -20,7 +20,7 @@
         { parameters: "<%= request_forgery_protection_token %>=" + encodeURIComponent('<%= j(form_authenticity_token) %>'),
           method: "GET",
           onSuccess: function() {
-            Effect.Pulsate('build-event-' + event_id, { pulses: 3 }))
+            Effect.Pulsate('build-event-' + event_id, { pulses: 3 })
           }
         }
       )

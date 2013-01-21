@@ -4,11 +4,13 @@
   </div>
 
   <div class="span11">
-    <%= link_to [build_event.project, build_event.repository, build_event.build],  class: build_event.status do %>
-      <%= md("**##{build_event.build.number}** " + build_event.build.summary).chomp.html_safe %>
-    <% end %>
+    <div class="<%= build_event.status %>">
+      <%= link_to [build_event.project, build_event.repository, build_event.build] do %>
+        <%= md("**##{build_event.build.number}** " + build_event.build.summary).chomp.html_safe %>
+      <% end %>
 
-    <p><%= build_event.message %></p>
+      <p><%= build_event.message %></p>
+    </div>
 
     <dl>
       <dt>Project</dt>
