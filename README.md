@@ -7,23 +7,44 @@ crumble when there where to many builds.
 
 ## CI herder girl?
 
-Continious Integration, not enterprisy Travis style, but plain and simple;
-*"Bauer-Art"*.
+Continious Integration, not Enterprisy-Travis-Style, but plain and simple;
+*"Bauern-Art"*.
 
-Not all things need to be tested against everything. Your thing needs to be
-tested against just your setup.
+The Heidi philosophy:
 
-## Deployment roboy?
+  *Not all things need to be tested against everything. Your thing needs to be
+  tested against just your setup.*
 
-Will be, not yet
+## Deployment robot?
+
+Will be/have, not yet
 
 ## Status
 
-Pre-pre-pre-alpha, at best. :wink:
+Alpha, I will start to use Heidi2 IRL soon, and it will bring, w/o doubt
+many changes.
+
+## Install
+
+Heidi2 is a Rails application and should be treated as such.
+
+### Heidi2
+
+1. Clone/checkout heidi2 from github.
+2. Edit ```config/heidi2.rb``` and make the necessary changes.
+3. Run ```./script/create_admin.rb``` to create an initial user.
+4. Run ```rails server``` and visit http://localhost:3000/
+
+### Real-time updates
+
+1. Install node-js
+2. Do (as root) ```npm install -g forever```
+2. Do ```npm install faye```
+3. Run ```forever start ./script/faye_server.js```
 
 ## Contributing to heidi
 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
+* Checkout the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.
 * Start a feature/bugfix branch.
