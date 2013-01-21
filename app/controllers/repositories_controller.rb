@@ -8,11 +8,11 @@ class RepositoriesController < ApplicationController
   }
 
   def new
-    @repository = sandbox.project.new_repository(@project)
+    @repository = sandbox.repository.build(@project)
   end
 
   def create
-    @repository = sandbox.project.create_repository(@project, params[:repository])
+    @repository = sandbox.repository.create(@project, params[:repository])
   end
 
   def show

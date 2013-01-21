@@ -8,7 +8,7 @@ class Repository
   field :uri, type: String
   field :default_branch, type: String, default: "origin/develop"
   field :last_head, type: String
-  field :build_environment, type: Hash
+  field :build_environment, type: Hash, default: {}
 
   embedded_in :project
   embeds_many :build_instructions
@@ -152,5 +152,7 @@ class Repository
 
   def build_environment_text
     build_environment.collect { |k,v| "#{k}=#{v =~ /\s/ ? %Q{"#{v}"} : v}" }.join("\n")
+  rescue
+    ""
   end
 end

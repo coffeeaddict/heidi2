@@ -1,6 +1,16 @@
 class RepositoryModule < Kindergarten::Perimeter
   purpose :repository
 
+  expose :build
+  def build(project, attr={})
+    project.repositories.build(scrub(attr, :name, :uri))
+  end
+
+  expose :create
+  def create(project, attr)
+    project.repositories.create(scrub(attr, :name, :uri))
+  end
+
   expose :update
   def update(repo, args)
     args['build_environment'] = parse_env(args.delete('build_environment'))
