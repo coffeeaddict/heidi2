@@ -1,3 +1,2 @@
-* Write more specs
-* Write more specs
+* Switch from riak document to GridFS (seems to make sense)
 * Make a web-based install 'wizard'
