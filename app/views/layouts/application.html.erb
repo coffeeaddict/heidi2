@@ -13,7 +13,7 @@
 
   <script type="text/javascript" defer="defer">
     jQuery.noConflict();
-    var client = new Faye.Client('http://localhost:8000/faye');
+    var client = new Faye.Client('<%= j Heidi2::Application.config.faye_uri %>');
   </script>
 
 </head>
