@@ -78,7 +78,7 @@ module Heidi2
         'HEIDI2_BRANCH'       => @build.repository.default_branch,
 
         'RUBYOPT'         => nil,
-        'BUNDLE_BIN_PAHT' => nil,
+        'BUNDLE_BIN_PATH' => nil,
         'BUNDLE_GEMFILE'  => nil,
         'GEM_HOME'        => nil,
         'GEM_PATH'        => nil,
