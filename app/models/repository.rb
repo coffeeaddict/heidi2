@@ -135,7 +135,7 @@ class Repository
   end
 
   def commit
-    git.commit(default_branch)
+    git.commit(default_branch) || git.commit("HEAD") || git.commit("FETCH_HEAD")
   end
 
   def build(commit=self.commit, blocking=false)
