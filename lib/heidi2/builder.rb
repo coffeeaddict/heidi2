@@ -40,6 +40,12 @@ module Heidi2
           return
         end
 
+        if @repo.git.commit(commit).message =~ /\[(skip ci|ci skip)\]/
+          @build.destroy
+          @event.destroy
+          return
+        end
+
         @repo.update_attributes( last_head: commit )
         @event.set_message("Creating build checkout")
         @repo.checkout(commit)
