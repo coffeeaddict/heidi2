@@ -6,6 +6,7 @@ class Build
   embeds_one :log
 
   # a build is-a commit
+  field :number, type: Integer, default: 0
   field :commit, type: String
   field :created_at, type: DateTime, default: ->() { Time.now }
 
@@ -17,19 +18,15 @@ class Build
   # has a status
   field :status, type: String, default: 'pending'
 
-  validates :status, presence: true, inclusion: { in: %w[pending passed failed building] }
+  validates :status, presence: true, inclusion: { in: %w[pending skipped passed failed building] }
 
-  after_save ->() {
-    self.repository.project.determine_status
-  }
+  after_create :create_log
+
+  after_save ->() { self.repository.project.determine_status }
 
   def summary
     repository.git.commit(self.commit).message.split(/\n/).first
   rescue
     "---"
-  end
-
-  def number
-    repository.builds.index(self) + 1
   end
 end
