@@ -1,19 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 
-gem 'mongoid', '~> 3.0'
-gem 'bson_ext'
+gem 'mongoid', '~> 3.1'
+platform :ruby do
+  gem 'bson_ext'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'less-rails',   '~> 2.2.6'
   gem 'therubyracer', '0.10', :platform => :ruby
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
+  gem 'therubyrhino', :platform => :jruby
   gem 'uglifier', '>= 1.0.3'
 end
 
