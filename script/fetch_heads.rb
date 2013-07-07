@@ -18,7 +18,7 @@ EM.run {
         next
       end
 
-      if head.id != repo.last_head
+      if head.id != repo.build_head
         if head.message !~ /\[(skip ci|ci skip)\]/
           payload = {
             project: project._id,
@@ -40,7 +40,7 @@ EM.run {
           debug("\t\tBuilding #{head.id[0..6]}")
         else
           debug("\t\tSkipping #{head.id[0..6]} per request [#{$1}]")
-          repo.update_attributes( last_head: head.id )
+          repo.update_attributes( build_head: head.id )
         end
       else
         debug("\t\tNothing changed")
