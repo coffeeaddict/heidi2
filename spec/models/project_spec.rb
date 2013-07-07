@@ -18,33 +18,32 @@ describe Project do
      p = Project.create( name: "foo bar" )
 
     template = %w[passed failed passed]
-    3.times do |i|
-      r = p.repositories.create(name: i, uri: i )
-      r.builds.create( status: template[i] )
-    end
-
     expect {
-      p.determine_status
+      3.times do |i|
+        r = p.repositories.create(name: i, uri: i )
+        r.builds.create( status: template[i] )
+      end
+
     }.to change {
       p.status
     }.to "failed"
   end
 
   it "should set the own status based on building repo" do
-    p = Project.create( name: "foo bar" )
+    project = Project.create( name: "foo bar" )
 
     template = %w[building failed passed]
-    3.times do |i|
-      r = p.repositories.create(name: "x", uri: "y" )
-      r.builds.create( status: template[i] )
-    end
-
     expect {
-      p.determine_status
+      3.times do |i|
+        r = project.repositories.create(name: "x", uri: "y" )
+        r.builds.create( status: template[i] )
+      end
+
     }.to change {
-      p.status
+      project.status
     }.to "building"
   end
+
 
   it "should return a collection of builds" do
     p = Project.create( name: "foo bar" )
@@ -67,4 +66,6 @@ describe Project do
 
     p.build!
   end
+
+  it "should have a buildnr"
 end
