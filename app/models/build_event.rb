@@ -22,22 +22,25 @@ class BuildEvent
   }
 
   def repository=(repository)
+    @repository = repository
     self.repository_id = repository._id
   end
   def repository
-    project.repositories.find(repository_id)
+    @repository ||= project.repositories.find(repository_id)
   end
 
   def build=(build)
+    @build = build
     self.build_id = build._id
   end
   def build
-    repository.builds.find(build_id)
+    @build ||= repository.builds.find(build_id)
   end
 
   def set_message(msg)
     update_attributes(message: msg)
-  end
+    build.log.append("[event] #{msg}") unless msg.blank?
+   end
 
   delegate :status, to: :build
 end
