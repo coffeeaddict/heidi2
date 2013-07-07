@@ -37,7 +37,8 @@ class RepositoriesController < ApplicationController
 
   def hook
     info = JSON.parse(params[:payload])
-    @project.delay.build(params[:id], info['after'])
+    repo = @project.repositories.find(params[:id])
+    repo.build(info['after'])
 
     head :ok
   end
