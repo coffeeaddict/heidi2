@@ -4,6 +4,7 @@ class Project
   field :name, type: String
   field :_id, type: String, default: ->{ name.underscore.gsub(/[^\p{Word}]+/,'-') rescue nil }
   field :status, type: String, default: "pending"
+  field :build_number, type: Integer, default: 0
 
   embeds_many :repositories
   has_many :build_events
@@ -24,7 +25,7 @@ class Project
 
   def build!
     repositories.each do |repo|
-      repo.build
+      repo.build()
     end
   end
 
