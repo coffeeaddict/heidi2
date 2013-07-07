@@ -26,6 +26,8 @@ gem 'kindergarten'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'thin'
 gem 'kaminari'
+gem 'celluloid'
+gem 'celluloid-io'
 
 # for heidi
 gem 'grit'

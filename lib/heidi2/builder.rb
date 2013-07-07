@@ -1,29 +1,31 @@
 module Heidi2
   class Builder
-    def initialize(repo)
-      @repo = repo
+    def build_object
+      @build
     end
 
-    def build(commit)
-      return if @repo.locked?
-      @repo.lock do
+    def initialize(instructions)
+      @project = Project.find(instructions['project'])
+      @repo    = @project.repositories.find(instructions['repository'])
+      @build   = @repo.builds.find(instructions['build'])
+    end
 
-        if @repo.builds.where( commit: commit ).any?
-          @build = @repo.builds.find_by( commit: commit )
+    def build(commit=@build.commit)
+      return if @repo.locked?
+      return if %w[skipped passed].include?(@build.status)
+
+      @repo.lock do
+        if @build.status != 'pending'
           if @build.status == 'building'
             Rails.logger.error "The build is already building"
             return
           end
           @build.log.flush
           @build.update_attributes(status: 'pending')
-
-        else
-          @build = @repo.builds.create( commit: commit )
-          @build.create_log
         end
 
         @event = BuildEvent.create(
-          project: @repo.project,
+          project: @project,
           repository_id: @repo._id,
           build_id: @build._id,
           message: "Started build"
@@ -35,22 +37,24 @@ module Heidi2
         end
 
         if @repo.git.commit(commit).nil?
-          @event.set_message("Commit #{commit} is unreachable." )
+          @event.set_message( "Commit #{commit} is unreachable." )
           @build.update_attributes( status: "failed" )
+
           return
         end
 
         if @repo.git.commit(commit).message =~ /\[(skip ci|ci skip)\]/
-          @build.destroy
-          @event.destroy
+          @build.update_attributes(status: "skipped")
+          @event.set_message( "Commit #{commit} wants to be skipped." )
+
           return
         end
 
-        @repo.update_attributes( last_head: commit )
+        @repo.update_attributes( build_head: commit )
         @event.set_message("Creating build checkout")
         @repo.checkout(commit)
 
-        @build.update_attributes( status: "building" )
+        @build.update_attributes(status: "building")
 
         @repo.build_instructions.each do |instruction|
           execute(instruction)
@@ -58,10 +62,10 @@ module Heidi2
         end
       end
 
-      @build.status = 'passed' unless @build.status == 'failed'
-      @build.save
-
-      @event.set_message('')
+      if @build.status == 'building'
+        @build.update_attributes( status: 'passed' )
+        @event.set_message('')
+      end
 
       return @build
     rescue => ex
@@ -106,7 +110,7 @@ module Heidi2
       res = shell.do(instructions.script)
 
       if res.S?.to_i != 0
-        @build.status = "failed"
+        @build.update_attributes( status: "failed" )
         @build.log.append("\e[1;31m-- Failed with exit status #{res.S?.to_i}\e[0m")
         @event.set_message("Failed on #{instructions.script}")
       end

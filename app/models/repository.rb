@@ -7,7 +7,7 @@ class Repository
   field :name, type: String
   field :uri, type: String
   field :default_branch, type: String, default: "origin/develop"
-  field :last_head, type: String
+  field :build_head, type: String
   field :build_environment, type: Hash, default: {}
 
   embedded_in :project
@@ -25,7 +25,7 @@ class Repository
   end
 
   def update_head
-    self.update_attributes( last_head: git.commits("HEAD").first.id )
+    self.update_attributes( build_head: git.commits("HEAD").first.id )
   end
 
   def guess_build_instructions
@@ -49,8 +49,8 @@ class Repository
 
 
   def summary
-    return "... pending ..." if last_head.blank?
-    git.object(last_head).message.split("\n").first
+    return "... pending ..." if build_head.blank?
+    git.object(build_head).message.split("\n").first
   end
 
   def path
@@ -139,15 +139,24 @@ class Repository
   end
 
   def build(commit=self.commit, blocking=false)
-    commit  = commit.id if commit.is_a?(Grit::Commit)
-    builder = Heidi2::Builder.new(self)
-    if blocking == true
-      builder.build(commit)
-    else
-      Thread.new(builder, commit) do |t_builder, sha|
-        t_builder.build(sha)
-      end
+    socket_path = Rails.root.join("tmp", "sockets", "worker.socket")
+
+    commit = commit.id if commit.is_a?(Grit::Commit)
+
+    if !File.exists? socket_path
+      raise "There is no worker hearing on #{socket_path}"
     end
+
+    number = project.inc(:build_number, 1);
+    build  = builds.create( number: number, commit: commit )
+
+    instructions = {
+      project: project.id, repository: self.id, build: build.id
+    }.to_json
+
+    socket = Celluloid::IO::UNIXSocket.open("#{socket_path}")
+    socket.syswrite(instructions)
+    socket.close
   end
 
   def build_environment_text
